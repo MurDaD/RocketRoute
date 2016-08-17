@@ -59,7 +59,7 @@ class API
             'AUTH' => [
                 'USR' => $this->user_login,
                 'PASSWD' => $this->user_pass,
-                //'DEVICEID' => '1299f2aa8935b9ffabcd4a2cbcd16b8d45691629',
+                'DEVICEID' => '1299f2aa8935b9ffabcd4a2cbcd16b8d45691629',
                 'PCATEGORY' => 'RocketRoute',
                 'APPMD5' => $this->md5,
             ]
