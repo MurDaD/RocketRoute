@@ -33,7 +33,7 @@ class API
         $this->user_login = $user_login;
         $this->user_pass = md5($user_pass);
         $this->api_domain = $api_domain;
-        $this->md5 = md5($md5);
+        $this->md5 = $md5;
         // Init curl
         $this->ch = curl_init();
         // Authenticate
