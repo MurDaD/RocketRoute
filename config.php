@@ -34,13 +34,16 @@ if(file_exists(dirname(__FILE__).'/includes/Helpers.php'))
 spl_autoload_register(function($class) {
     $map = [
         'app\API' => dirname(__FILE__).'/app/API.php',
+        'app\Server' => dirname(__FILE__).'/app/Server.php',
         'includes\Exception' => dirname(__FILE__).'/includes/Exception.php',
         'includes\Settings' => dirname(__FILE__).'/includes/Settings.php',
     ];
-    try {
-        include $map[$class];
-    } catch (Exception $e) {
-        echo $e->getMessage().'. Including '.$class.' from '.$map[$class];
+    if($map[$class]) {
+        try {
+            include $map[$class];
+        } catch (Exception $e) {
+            echo $e->getMessage() . '. Including ' . $class . ' from ' . $map[$class];
+        }
     }
 });
 

@@ -18,7 +18,9 @@ function logD($var) {
             print_r($var);
             echo '</pre>';
         } elseif(is_object($var)) {
-
+            echo '<pre>';
+            print_r($var);
+            echo '</pre>';
         } else {
             var_dump($var);
         }
