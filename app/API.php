@@ -95,6 +95,7 @@ class API
      *
      * @param $ICAO
      * @return array
+     * @throws Exception
      */
     public function getNOTAM($ICAO)
     {
@@ -120,12 +121,12 @@ class API
                         'ItemE' => $notam->ItemE->__toString(),
                     ]);
                 } else {
-                    die(new Exception('Could not convert coordinates'));
+                    throw new Exception('Could not convert coordinates');
                 }
             }
             return $result;
         } else {
-            die(new Exception('Wrong ICAO code.'));
+            throw new Exception('Wrong ICAO code.', 110);
         }
     }
 
@@ -135,7 +136,7 @@ class API
      * @param $str
      * @return mixed
      */
-    private function toLongLat($str)
+    public function toLongLat($str)
     {
         $coords = explode('/', $str);
         if(is_array($coords) && !empty(end($coords))) {
@@ -149,10 +150,10 @@ class API
      *
      * @param $geoLocation
      * @return array
+     * @throws Exception
      */
-    function DMStoDEC($geoLocation)
+    private function DMStoDEC($geoLocation)
     {
-        $returnArray = [];
         $originalGeoLocation = $geoLocation;
         if (!empty($geoLocation)) {
             $degree1 = mb_substr($geoLocation , 0 , 2);
@@ -164,6 +165,7 @@ class API
             $hour2 = substr(substr( $geoLocation, - 3 ), 0 , -1);
             $geoLocation = substr(substr( $geoLocation, 0, - 3 ), 1 , 3);
             $degree2 = $geoLocation;
+
             //Equate Longitude and Latitude
             $latitude = $degree1 + $hour1 / 60;
             $longitude = $degree2 + $hour2 / 60;
@@ -176,7 +178,7 @@ class API
             ];
             return $returnArray;
         } else {
-            die(new Exception('Wrong DMS code.'));
+            throw new Exception('Wrong DMS code.');
         }
     }
 
@@ -285,6 +287,13 @@ class API
         return $this->decode(curl_exec($this->ch));
     }
 
+    /**
+     * Request via soap client
+     *
+     * @param $url
+     * @param $request
+     * @return mixed
+     */
     public function requestStatic($url, $request)
     {
         $client = new \SoapClient($url);
@@ -292,6 +301,12 @@ class API
         return $response;
     }
 
+    /**
+     * Check if there is an error in API return
+     *
+     * @param $data
+     * @throws Exception
+     */
     private function error($data)
     {
         if(is_object($data->RESULT)) {
@@ -303,18 +318,24 @@ class API
                 $this->showApiError($data);
             }
         } else {
-            die(new Exception('API returned NULL result'));
+            throw new Exception('API returned NULL result');
         }
     }
 
+    /**
+     * Shows API error
+     *
+     * @param $data
+     * @throws Exception
+     */
     private function showApiError($data)
     {
         if(is_object($data->MESSAGE)) {
-            die(new Exception('API Error: ' . (string)$data->MESSAGE));
+            throw new Exception('API Error: ' . (string)$data->MESSAGE);
         } elseif(is_object($data->MESSAGES)) {
-            die(new Exception('API Error: ' . (string)$data->MESSAGES->MSG));
+            throw new Exception('API Error: ' . (string)$data->MESSAGES->MSG);
         } else {
-            die(new Exception('API Error!'));
+            throw new Exception('API Error!');
         }
     }
 }

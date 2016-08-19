@@ -12,11 +12,11 @@ if($_GET['icao'] && is_string($_GET['icao'])) {
     $icao = addslashes(htmlspecialchars($_GET['icao']));
 
     $api = new \app\Server(
-        'max_shakh@yahoo.com',          // your email
-        'qwert123',                     // your password
-        'api.rocketroute.com',          // api domain
-        'fly.rocketroute.com',          // auth domain
-        'Iw8DfRlZfPqHbW3bocNJ'          // md5
+        \includes\Settings::get('login'),
+        \includes\Settings::get('pass'),
+        \includes\Settings::get('api'),
+        \includes\Settings::get('auth'),
+        \includes\Settings::get('md5')
     );
     echo $api->getNOTAM($_GET['icao']);
 }

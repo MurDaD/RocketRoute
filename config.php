@@ -52,3 +52,11 @@ spl_autoload_register(function($class) {
  * Config DB here if needed db_host, db_user, db_pass, db_database
  */
 Settings::set('datetime_format','Y-m-d H:i:s');
+/**
+ * http://www.rocketroute.com/ API access data
+ */
+Settings::set('login','max_shakh@yahoo.com');
+Settings::set('pass','qwert123');
+Settings::set('api','api.rocketroute.com');
+Settings::set('auth','fly.rocketroute.com');
+Settings::set('md5','Iw8DfRlZfPqHbW3bocNJ');
